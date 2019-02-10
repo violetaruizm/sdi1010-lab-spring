@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Implementation-Title: Notaneitor
+Implementation-Title: sdi1010-lab-spring
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: Violeta
 Implementation-Vendor-Id: com.uniovi
