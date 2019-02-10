@@ -1,6 +1,11 @@
 package com.uniovi.entities;
+import javax.persistence.*;
 
+@Entity
 public class Mark {
+	
+	@Id//Clave primaria 
+	@GeneratedValue//generar automaticamente
 	private Long id;
 	private String description;
 	private Double score;
@@ -20,6 +25,7 @@ public class Mark {
 		return "Mark [id=" + id + ", description=" + description + ", score=" + score + "]";
 	}
 
+	
 	public Long getId() {
 		return id;
 	}
