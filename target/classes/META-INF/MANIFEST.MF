@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: sdi1010-lab-spring
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Violeta
+Built-By: uo258454
 Implementation-Vendor-Id: com.uniovi
-Build-Jdk: 1.8.0_201
+Build-Jdk: 1.8.0_172
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/sdi1010-lab-spring
 Created-By: Maven Integration for Eclipse
