@@ -21,7 +21,7 @@ public class MarksControllers {
 
 	@RequestMapping("/mark/list")
 	public String getList(Model model) {
-		//añade la lista de notas al modelo con el nombre markList
+		// añade la lista de notas al modelo con el nombre markList
 		model.addAttribute("markList", marksService.getMarks());
 		return "/mark/list";
 	}
@@ -33,7 +33,7 @@ public class MarksControllers {
 	}
 
 	@RequestMapping("/mark/details/{id}")
-	public String getDetail(Model model,@PathVariable Long id) {
+	public String getDetail(Model model, @PathVariable Long id) {
 		model.addAttribute("mark", marksService.getMark(id));
 		return "mark/details";
 	}
@@ -43,23 +43,29 @@ public class MarksControllers {
 		marksService.deleteMark(id);
 		return "redirect:/mark/list";
 	}
-	
+
 	@RequestMapping("/mark/add")
 	public String getMark() {
 		return "mark/add";
 	}
-	
+
 	@RequestMapping("mark/edit/{id}")
-	public String getEdit(Model model,@PathVariable Long id) {
-		model.addAttribute("mark",marksService.getMark(id));
+	public String getEdit(Model model, @PathVariable Long id) {
+		model.addAttribute("mark", marksService.getMark(id));
 		return "mark/edit";
 	}
-	
-	@RequestMapping(value="/mark/edit/{id}",method=RequestMethod.POST)
-	public String setEdit(Model model,@PathVariable long id,@ModelAttribute Mark mark) {
+
+	@RequestMapping(value = "/mark/edit/{id}", method = RequestMethod.POST)
+	public String setEdit(Model model, @PathVariable long id, @ModelAttribute Mark mark) {
 		mark.setId(id);
 		marksService.addMark(mark);
-		return "redirect:/mark/details/"+id;
+		return "redirect:/mark/details/" + id;
+	}
+
+	@RequestMapping("/mark/list/update")
+	public String updateList(Model model) {
+		model.addAttribute("markList", marksService.getMarks());
+		return "mark/list :: tableMarks";
 	}
 
 }
