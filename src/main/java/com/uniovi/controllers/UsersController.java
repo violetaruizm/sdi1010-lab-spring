@@ -5,10 +5,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.uniovi.entities.*;
 import com.uniovi.service.SecurityService;
 import com.uniovi.service.UsersService;
+import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
 public class UsersController {
@@ -18,6 +21,9 @@ public class UsersController {
 
 	@Autowired
 	private SecurityService securityService;
+
+	@Autowired
+	private SignUpFormValidator signUpFormValidator;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model) {
@@ -64,12 +70,19 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup() {
+	public String signup(Model model) {
+		model.addAttribute("user", new User());
 		return "signup";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signup(@ModelAttribute("user") User user, Model model) {
+	public String signup(@Validated User user, BindingResult result, Model model) {
+
+		signUpFormValidator.validate(user, result);
+		if (result.hasErrors()) {
+			return "signup";
+		}
+
 		usersService.addUser(user);
 		securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
 		return "redirect:home";
@@ -85,7 +98,7 @@ public class UsersController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String dni = auth.getName();
 		User activeUser = usersService.getUserByDni(dni);
-		model.addAttribute("markList",activeUser.getMarks());
+		model.addAttribute("markList", activeUser.getMarks());
 		return "home";
 	}
 
