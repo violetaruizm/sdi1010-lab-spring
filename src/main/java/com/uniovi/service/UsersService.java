@@ -1,8 +1,11 @@
 package com.uniovi.service;
 
 import java.util.*;
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.uniovi.entities.User;
 import com.uniovi.repositories.UsersRepository;
@@ -13,8 +16,12 @@ public class UsersService {
 	
 	@Autowired
 	private UsersRepository usersRepository;
-/*
-	@PostConstruct
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
+	/*@PostConstruct
 	public void init() {
 	}*/
 
@@ -29,11 +36,21 @@ public class UsersService {
 	}
 
 	public void addUser(User user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		usersRepository.save(user);
+	}
+	
+	public User getUserByDni(String dni) {
+		return usersRepository.findByDni(dni);
 	}
 
 	public void deleteUser(Long id) {
 		usersRepository.deleteById(id);
 	}
+
+	
+	
+
+	
 
 }

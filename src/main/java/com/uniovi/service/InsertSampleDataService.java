@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.uniovi.entities.Mark;
 import com.uniovi.entities.User;
 
-//@Service
+@Service
 public class InsertSampleDataService {
 
 	@Autowired
@@ -20,11 +20,18 @@ public class InsertSampleDataService {
 	@PostConstruct
 	public void init() {
 		User user1 = new User("99999990A", "Pedro", "Díaz");
+		
 		User user2 = new User("99999991B", "Lucas", "Núñez");
 		User user3 = new User("99999992C", "María", "Rodríguez");
 		User user4 = new User("99999993D", "Marta", "Almonte");
 		User user5 = new User("99999977E", "Pelayo", "Valdes");
 		User user6 = new User("99999988F", "Edward", "Núñez");
+		user1.setPassword("123456");
+		user2.setPassword("123456");
+		user3.setPassword("123456");
+		user4.setPassword("123456");
+		user5.setPassword("123456");
+		user6.setPassword("123456");
 		Set user1Marks = new HashSet<Mark>() {
 			{
 				add(new Mark("Nota A1", 10.0, user1));
