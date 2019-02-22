@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.uniovi.entities.*;
 import com.uniovi.service.SecurityService;
 import com.uniovi.service.UsersService;
+import com.uniovi.validators.AddUserValidator;
+
 import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
@@ -25,6 +27,11 @@ public class UsersController {
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
 
+	@Autowired
+	private AddUserValidator addUserValidator;
+	
+	
+
 	@RequestMapping("/user/list")
 	public String getListado(Model model) {
 		model.addAttribute("usersList", usersService.getUsers());
@@ -33,18 +40,24 @@ public class UsersController {
 
 	@RequestMapping(value = "/user/add")
 	public String getUser(Model model) {
-		model.addAttribute("usersList", usersService.getUsers());
+		
+		model.addAttribute("user", new User());
 		return "user/add";
 	}
 
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String setUser(@ModelAttribute User user) {
+	public String setUser(@Validated User user, BindingResult result) {
+		addUserValidator.validate(user, result);
+		if (result.hasErrors()) {
+			return "user/add";
+		}
 		usersService.addUser(user);
 		return "redirect:/user/list";
 	}
 
 	@RequestMapping("/user/details/{id}")
 	public String getDetail(Model model, @PathVariable Long id) {
+
 		model.addAttribute("user", usersService.getUser(id));
 		return "user/details";
 	}
@@ -87,6 +100,8 @@ public class UsersController {
 		securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
 		return "redirect:home";
 	}
+	
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
@@ -101,5 +116,8 @@ public class UsersController {
 		model.addAttribute("markList", activeUser.getMarks());
 		return "home";
 	}
+	
+	
+
 
 }
