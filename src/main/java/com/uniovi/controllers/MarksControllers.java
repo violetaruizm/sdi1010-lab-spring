@@ -1,5 +1,10 @@
 package com.uniovi.controllers;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.uniovi.entities.Mark;
 import com.uniovi.service.MarksService;
@@ -19,12 +22,22 @@ public class MarksControllers {
 
 	@Autowired // Inyectar el servicio
 	private MarksService marksService;
-	
+
 	@Autowired
 	private UsersService usersService;
 
+	@Autowired
+	private HttpSession httpSession;
+
 	@RequestMapping("/mark/list")
 	public String getList(Model model) {
+
+		/*Set<Mark> consultedList = (Set<Mark>) httpSession.getAttribute("consultedList");
+		if (consultedList == null) {
+			consultedList = new HashSet<Mark>();
+		}
+		model.addAttribute("consultedList", consultedList);*/
+		
 		// añade la lista de notas al modelo con el nombre markList
 		model.addAttribute("markList", marksService.getMarks());
 		return "/mark/list";
@@ -50,14 +63,14 @@ public class MarksControllers {
 
 	@RequestMapping("/mark/add")
 	public String getMark(Model model) {
-		model.addAttribute("usersList",usersService.getUsers());
+		model.addAttribute("usersList", usersService.getUsers());
 		return "mark/add";
 	}
 
 	@RequestMapping(value = "mark/edit/{id}")
 	public String getEdit(Model model, @PathVariable Long id) {
 		model.addAttribute("mark", marksService.getMark(id));
-		model.addAttribute("usersList",usersService.getUsers());
+		model.addAttribute("usersList", usersService.getUsers());
 		return "mark/edit";
 	}
 
