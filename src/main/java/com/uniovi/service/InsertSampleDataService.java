@@ -36,11 +36,11 @@ public class InsertSampleDataService {
 		user5.setPassword("123456");
 		user6.setPassword("123456");
 		user1.setRole(rolesService.getRoles()[0]);
-		user1.setRole(rolesService.getRoles()[0]);
-		user1.setRole(rolesService.getRoles()[0]);
-		user1.setRole(rolesService.getRoles()[1]);
-		user1.setRole(rolesService.getRoles()[1]);
-		user1.setRole(rolesService.getRoles()[2]);
+		user2.setRole(rolesService.getRoles()[0]);
+		user3.setRole(rolesService.getRoles()[0]);
+		user4.setRole(rolesService.getRoles()[1]);
+		user5.setRole(rolesService.getRoles()[1]);
+		user6.setRole(rolesService.getRoles()[2]);
 		Set user1Marks = new HashSet<Mark>() {
 			{
 				add(new Mark("Nota A1", 10.0, user1));
