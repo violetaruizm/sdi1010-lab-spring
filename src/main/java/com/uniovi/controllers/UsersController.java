@@ -1,18 +1,22 @@
 package com.uniovi.controllers;
 
-import org.springframework.beans.factory.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import com.uniovi.entities.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.uniovi.entities.User;
+import com.uniovi.service.RolesService;
 import com.uniovi.service.SecurityService;
 import com.uniovi.service.UsersService;
 import com.uniovi.validators.AddUserValidator;
-
 import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
@@ -30,6 +34,9 @@ public class UsersController {
 	@Autowired
 	private AddUserValidator addUserValidator;
 	
+	@Autowired
+	private RolesService rolesService;
+	
 	
 
 	@RequestMapping("/user/list")
@@ -41,6 +48,7 @@ public class UsersController {
 	@RequestMapping(value = "/user/add")
 	public String getUser(Model model) {
 		
+		model.addAttribute("rolesList", rolesService.getRoles());
 		model.addAttribute("user", new User());
 		return "user/add";
 	}
@@ -49,8 +57,8 @@ public class UsersController {
 	public String setUser(@Validated User user, BindingResult result) {
 		addUserValidator.validate(user, result);
 		if (result.hasErrors()) {
-			return "user/add";
-		}
+			return "user/add";}
+		
 		usersService.addUser(user);
 		return "redirect:/user/list";
 	}
@@ -95,7 +103,8 @@ public class UsersController {
 		if (result.hasErrors()) {
 			return "signup";
 		}
-
+		//usuario registrado --> rol de estudiante
+        user.setRole(rolesService.getRoles()[0]);
 		usersService.addUser(user);
 		securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
 		return "redirect:home";
