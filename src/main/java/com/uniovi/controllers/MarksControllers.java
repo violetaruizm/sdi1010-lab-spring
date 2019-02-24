@@ -1,5 +1,6 @@
 package com.uniovi.controllers;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.uniovi.entities.Mark;
+import com.uniovi.entities.User;
 import com.uniovi.service.MarksService;
 import com.uniovi.service.UsersService;
 
@@ -30,7 +32,7 @@ public class MarksControllers {
 	private HttpSession httpSession;
 
 	@RequestMapping("/mark/list")
-	public String getList(Model model) {
+	public String getList(Model model,Principal principal) {
 
 		/*Set<Mark> consultedList = (Set<Mark>) httpSession.getAttribute("consultedList");
 		if (consultedList == null) {
@@ -39,7 +41,12 @@ public class MarksControllers {
 		model.addAttribute("consultedList", consultedList);*/
 		
 		// añade la lista de notas al modelo con el nombre markList
-		model.addAttribute("markList", marksService.getMarks());
+		
+		
+		//Principal ≈ SecurityContextHolder
+		String dni = principal.getName();
+		User user = usersService.getUserByDni(dni);
+		model.addAttribute("markList", marksService.getMarksForUser(user));
 		return "/mark/list";
 	}
 
@@ -84,8 +91,10 @@ public class MarksControllers {
 	}
 
 	@RequestMapping("/mark/list/update")
-	public String updateList(Model model) {
-		model.addAttribute("markList", marksService.getMarks());
+	public String updateList(Model model,Principal principal) {
+		String dni = principal.getName();
+		User user = usersService.getUserByDni(dni);
+		model.addAttribute("markList", marksService.getMarksForUser(user));
 		return "mark/list :: tableMarks";
 	}
 	
