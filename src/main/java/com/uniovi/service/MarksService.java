@@ -83,4 +83,17 @@ public class MarksService {
 		
 		return marks;
 	}
+	
+	
+	public List<Mark> searchMarksByDescriptionAndNameForUser(String searchtext,User user){
+		List<Mark> marks = new ArrayList<Mark>();
+		searchtext = "%"+searchtext+"%";
+		
+		if(user.getRole().equals("ROLE_STUDENT")) {
+			marks = marksRepository.searchByDescriptionNameAndUser(searchtext, user);
+		}
+		if(user.getRole().equals("ROLE_PROFESSOR")) {
+			marks = marksRepository.searchByDescriptionAndName(searchtext);
+		}
+				return marks;}
 }

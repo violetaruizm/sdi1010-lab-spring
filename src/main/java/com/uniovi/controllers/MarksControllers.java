@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.Mark;
 import com.uniovi.entities.User;
@@ -32,7 +33,7 @@ public class MarksControllers {
 	private HttpSession httpSession;
 
 	@RequestMapping("/mark/list")
-	public String getList(Model model,Principal principal) {
+	public String getList(Model model,Principal principal, @RequestParam(value = "",required=false) String searchText) {
 
 		/*Set<Mark> consultedList = (Set<Mark>) httpSession.getAttribute("consultedList");
 		if (consultedList == null) {
@@ -46,7 +47,11 @@ public class MarksControllers {
 		//Principal ≈ SecurityContextHolder
 		String dni = principal.getName();
 		User user = usersService.getUserByDni(dni);
-		model.addAttribute("markList", marksService.getMarksForUser(user));
+		
+		if(searchText !=null && !searchText.isEmpty()) {
+		model.addAttribute("markList",marksService.searchMarksByDescriptionAndNameForUser(searchText, user));	
+		}else {
+		model.addAttribute("markList", marksService.getMarksForUser(user));}
 		return "/mark/list";
 	}
 
