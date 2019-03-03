@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
+import com.uniovi.tests.pageobjects.PO_LogInView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
@@ -118,7 +119,62 @@ public class NotaneitorTests {
 	
 	
 	
+	//PR07:Identificación válida con usuario de ROL usuario
+	@Test 
+	public void PR07() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		
+		PO_LogInView.fillForm(driver, "99999990A", "123456");
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+	}
 	
+	//PR08: Identificación válida con usuario de ROL profesor
+	@Test
+	public void PR08() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		PO_LogInView.fillForm(driver, "99999993D", "123456");
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+		
+	}
 	
+	//PR09: Identificación válida con usuario de ROL Administrado
+	@Test
+	public void PR09() {
+		
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		
+		PO_LogInView.fillForm(driver, "99999988F", "123456");
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+		
+	}
 	
+	//PR10: Identificación inválida con usuario de ROL alumno
+	@Test 
+	public void PR10() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		
+		PO_LogInView.fillForm(driver, "99999990A", "1234");
+		PO_View.checkElement(driver, "text", "Identifícate");
+		
+	}
+	
+	//PR11:Identificación   válida y   desconexión   con   usuario   de   ROL   usuario( 99999990A/123456).
+	@Test 
+	public void PR11() {
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		
+		PO_LogInView.fillForm(driver, "99999990A", "123456");
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+		PO_View.checkElement(driver, "text", "Identifícate");
+	}
+
 }
+
+
+
+
+
