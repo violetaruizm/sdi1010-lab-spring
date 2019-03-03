@@ -11,6 +11,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_Properties;
+import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_View;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NotaneitorTests {
@@ -83,4 +85,40 @@ public class NotaneitorTests {
 				PO_Properties.getENGLISH());
 		// SeleniumUtils.esperarSegundos(driver, 2);
 	}
+	
+	//PR05.  Prueba del formulario de registro.  registro con datos correctos
+	@Test
+	public void PR05() {
+		//Vamos al formulario de registro
+		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+		//Rellenamos el formulario
+		PO_RegisterView.fillForm(driver, "77777778A", "josefo", "perez", "77777777", "77777777");
+		
+		//Comprobamos que entramos en la sección privada
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//PR06.  Pruebadelformularioderegistro.  DNI  repetidoenlaBD,  Nombrecorto,  ....  pagination  pagination-­‐centered,  Error.signup.dni.length
+	@Test
+	public void PR06()  {
+		//Vamosalformularioderegistro
+		PO_HomeView.clickOption(driver,  "signup",  "class",  "btn btn-primary");
+		//Rellenamosel  formulario.
+		PO_RegisterView.fillForm(driver,  "99999990A",  "Josefo",  "Perez",  "77777",  "77777");
+		PO_View.getP();
+		//COmprobamos  el  error  deDNI  repetido.
+		PO_RegisterView.checkKey(driver,  "Error.signup.dni.duplicate",  PO_Properties.getSPANISH()  );
+		//Rellenamosel  formulario.
+		PO_RegisterView.fillForm(driver,  "99999990B",  "Jose",  "Perez",  "77777",  "77777");
+		//COmprobamos  el  error  deNombrecorto.
+		PO_RegisterView.checkKey(driver,  "Error.signup.name.length",  PO_Properties.getSPANISH()  );
+		//Rellenamosel  formulario.
+		PO_RegisterView.fillForm(driver,  "99999990B",  "Josefo",  "Per",  "77777",  "77777");}
+	
+	
+	
+	
+	
+	
+	
 }
